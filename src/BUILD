@@ -19,7 +19,7 @@ cpp_grpc_library(
 
 cc_binary(
     name = "main",
-    srcs = ["main.cpp"],
+    srcs = ["main.cc"],
     deps = [ 
         ":cpp_thing_proto_lib",
         ":greeter_cpp_grpc",
