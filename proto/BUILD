@@ -1,6 +1,6 @@
 proto_library(
     name = "hello_proto",
-    srcs = ["hello.proto"],
+    srcs = ["helloworld.proto"],
 )
 
 load("@rules_proto_grpc//cpp:defs.bzl", "cpp_proto_library")
