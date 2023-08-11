@@ -6,9 +6,7 @@ compilation_database(
     targets = [ 
         "//proto:hello_greeter_cpp_grpc",
         ":server",
-        "@com_google_absl//absl/flags:flag",
-        "@com_google_absl//absl/flags:parse",
-        "@com_google_absl//absl/strings:str_format",
+        ":client",
     ],  
     output_base = OUTPUT_BASE,
 )
