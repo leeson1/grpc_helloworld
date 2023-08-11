@@ -2,7 +2,6 @@ proto_library(
     name = "hello_proto",
     srcs = [
         "helloworld.proto",
-        "routeguide.proto"
     ],
 )
 

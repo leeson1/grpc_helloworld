@@ -10,9 +10,10 @@ Generate compile_commands.json
 bazel build src:example_compdb
 ```
 
-build project
+Build project
 
 ```shell
 bazel build ...
-bazel build src:main
+bazel build src:server
+bazel build src:client
 ```
