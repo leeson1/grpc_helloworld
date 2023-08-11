@@ -10,7 +10,7 @@ Generate compile_commands.json
 bazel build src:example_compdb
 ```
 
-Build project
+To only build the server and client, run the following:
 
 ```shell
 bazel build ...
