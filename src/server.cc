@@ -53,8 +53,6 @@ void RunServer()
   std::unique_ptr<Server> server(builder.BuildAndStart());
   std::cout << "Server listening on " << server_address << std::endl;
 
-  gpr_log("./log.log",1,gpr_log_severity::GPR_LOG_SEVERITY_INFO,"Test Log...");
-
   server->Wait();
 }
 
