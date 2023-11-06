@@ -13,7 +13,7 @@
 
 #include "proto/helloworld.grpc.pb.h"
 
-ABSL_FLAG(std::string, target, "localhost:5001", "Server address");
+ABSL_FLAG(std::string, target, "localhost:8081", "Server address");
 
 using grpc::Channel;
 using grpc::ClientContext;

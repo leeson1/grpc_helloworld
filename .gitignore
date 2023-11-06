@@ -1,5 +1,8 @@
 .vscode
 
-bazel-*
+bazel-bin
+bazel-grpc_helloworld
+bazel-out
+bazel-testlogs
 
 logs

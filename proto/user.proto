@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package user;
+
+service UserMessage {
+    rpc UserLogin (UserRequest) returns (UserRespond) {}
+    rpc UserRegister (UserRequest) returns (UserRespond) {}
+}
+
+enum MessageID {
+    NONE = 0;
+    REQ_LOGIN = 1001;
+    RSP_LOGIN = 1002;
+    REQ_REGISTER = 1003;
+    RSP_REGISTER = 1004;
+}
+
+
+message UserRequest {
+    MessageID msg_id = 1;   //消息ID
+    string data = 2;    //消息体
+}
+
+message UserRespond {
+    MessageID msg_id = 1;   //消息ID
+    string data = 2;    //消息体
+}
+

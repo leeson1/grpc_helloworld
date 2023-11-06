@@ -4,6 +4,7 @@ proto_library(
     name = "hello_proto",
     srcs = [
         "helloworld.proto",
+        "user.proto"
     ],
 )
 
