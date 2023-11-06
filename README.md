@@ -1,3 +1,7 @@
+<!--
+ * @Author: Leeson
+ * @Date: 2023-09-25 23:46:38
+-->
 # Overview
 Getting started with grpc (in C++).
 
@@ -14,6 +18,5 @@ To only build the server and client, run the following:
 
 ```shell
 bazel build ...
-bazel build src:server
-bazel build src:client
+bazel build src/...
 ```
