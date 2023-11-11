@@ -1,3 +1,6 @@
 [submodule "third_party/bazel-compilation-database"]
 	path = third_party/bazel-compilation-database
 	url = https://github.com/grailbio/bazel-compilation-database.git
+[submodule "third_party/rules_proto_grpc"]
+	path = third_party/rules_proto_grpc
+	url = https://github.com/rules-proto-grpc/rules_proto_grpc
