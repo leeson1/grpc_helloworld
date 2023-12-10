@@ -1,8 +1,10 @@
-build --action_env=BAZEL_CXXOPTS="-std=c++17"
-#build --cxxopt='--std=c++17'
+#build --action_env=BAZEL_CXXOPTS="-std=c++17"
+build --cxxopt='--std=c++17'
 build --cxxopt=-O2
-build --jobs 4
+build --jobs 8
 
-build --sandbox_writable_path=/run/user/0/ccache-tmp/
-build --sandbox_writable_path=/root/.cache/
+build --remote_cache=http://localhost:9091
+
+#build --sandbox_writable_path=/run/user/0/ccache-tmp/
+#build --sandbox_writable_path=/root/.cache/
 #build --spawn_strategy=local
