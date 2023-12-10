@@ -10,13 +10,18 @@
 // #include "absl/flags/parse.h"
 // #include "absl/strings/str_format.h"
 
-#include <glog/logging.h>
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 
+#include "fmt/core.h"
 #include "proto/helloworld.grpc.pb.h"
 #include "proto/user.grpc.pb.h"
+#include "spdlog/async.h"
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/spdlog.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -38,7 +43,6 @@ class GreeterServiceImpl final : public Greeter::Service
     Status SayHello(ServerContext* context, const HelloRequest* request,
                     HelloReply* reply) override
     {
-        LOG(INFO) << "SayHello ...";
         std::string prefix("Hello ");
 
         reply->set_hitokoto("123");
@@ -49,7 +53,6 @@ class GreeterServiceImpl final : public Greeter::Service
     Status SayHelloAgain(ServerContext* context, const HelloRequest* request,
                          HelloReply* reply) override
     {
-        LOG(INFO) << "SayHelloAgain ...";
         std::string prefix("Hello again ");
         reply->set_message(prefix + request->name());
 
@@ -62,29 +65,21 @@ class UserServiceImpl final : public UserMessage::Service
     Status UserLogin(ServerContext* context, const UserRequest* req,
                      UserRespond* rsp)
     {
-        LOG(INFO) << "UserLogin ...";
         if (req->msg_id() == user::MessageID::NONE)
         {
-            LOG(ERROR) << "msg_id[" << req->msg_id() << "] error.";
             return Status::CANCELLED;
         }
 
         auto fun = msg_list.find(req->msg_id());
+        if(fun == msg_list.end())
+        {
+            return Status::CANCELLED;
+        }
         auto status = fun->second(req, rsp);
 
         return Status::OK;
     }
 };
-
-int32_t InitGlog()
-{
-    google::InitGoogleLogging("grpc_helloworld");  // 日志名称
-    FLAGS_log_dir = "./logs";                      // 日志目录
-    FLAGS_logbufsecs = 0;                          // 日志缓冲秒数
-    FLAGS_colorlogtostderr = true;                 // 彩色消息
-    FLAGS_log_prefix = true;                       // 日志前缀
-    return 0;
-}
 
 int32_t RegisterMessage()
 {
@@ -95,7 +90,6 @@ int32_t RegisterMessage()
 
 int32_t Init()
 {
-    InitGlog();
     RegisterMessage();
     return 0;
 }
@@ -116,19 +110,35 @@ void RunServer()
     std::cout << "Server listening on " << server_address << std::endl;
 
     server->Wait();
-    google::ShutdownGoogleLogging();
+}
+
+void stdout_example()
+{
+    // create a color multi-threaded logger
+    auto console = spdlog::stdout_color_mt("console");
+    auto err_logger = spdlog::stderr_color_mt("stderr");
+    spdlog::get("console")->info("loggers can be retrieved from a global registry using the spdlog::get(logger_name)");
 }
 
 int main(int argc, char** argv)
 {
+    auto async_file = spdlog::basic_logger_mt<spdlog::async_factory>("async_file_logger", "logs/async_log.txt");
+    //auto my_logger = spdlog::basic_logger_mt("file_logger","logs/my_log.txt");
+    //spdlog::set_default_logger(my_logger);
+    //my_logger->set_level(spdlog::level::debug);
+    //my_logger->info("Welcome to spdlog! {} {}",123,456);
+    //my_logger->flush_on(spdlog::level::debug);
+    spdlog::set_default_logger(async_file);
+
+    async_file->set_level(spdlog::level::debug);
+    async_file->flush_on(spdlog::level::debug);
+    async_file->info("Welcome to spdlog!", 123, 456);
+    spdlog::debug("123123");
+    SPDLOG_INFO("SPDLOG_INFO {}","123");
+    SPDLOG_DEBUG("SPDLOG_DEBUG {}",123);
+
+    //stdout_example();
     Init();
-
-    std::cout << "grpc-version: " << grpc::Version() << std::endl;
-    std::cout << "Test ccache" << std::endl;
-#ifdef BAZEL_TEST
-    std::cout << "BAZEL_TEST..." << std::endl;
-#endif
-
     RunServer();
 
     return 0;
