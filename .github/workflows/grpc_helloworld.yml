@@ -13,5 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Checkout submodule
+      run: git submodule update --init --recursive
     - name: build project
       run: bazel build //src/...
